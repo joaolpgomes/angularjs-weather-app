@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Weather App</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,300italic,700,100italic' rel='stylesheet' type='text/css'>  <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css"/>
+    <link rel="stylesheet" href="styles/css.min.css"/>
+</head>
+<body ng-app="weatherApp" ng-cloak>
+  <div ng-controller="MainCtrl">
+    <div id="logo-container" class="animated bounceInDown">
+      <img alt="Weather App" src="images/weather.gif" width="150">
+      <h1>Weather App</h1>
+    </div>
+    <div class="container">
+      <div class="row search-container animated bounceInUp">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+            <div ng-if="error" class="alert alert-danger">Nothing to show</div>
+            <input type="text" class="form-control input-search" placeholder="Search by City" ng-model="search"/>
+          <input type="submit" class="btn btn-primary search-button"  value="Search" ng-click="requestForecast()"/>
+        </div>
+      </div>
+      <div class="row container-results" ng-if="forecastResult && !error" ng-cloak>
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+              <div>
+                {{forecastResult.item.condition.date}} - {{forecastResult.location.city}}, {{forecastResult.location.country}}
+              </div>
+              <div class="current">
+                {{forecastResult.item.condition.temp}} °F / {{forecastResult.item.condition.temp | celsius}} °C
+              </div>
+
+            <div class="title-item">
+              Forecast for the next 5 Days
+            </div>
+            <div class="forecast" ng-if="$index > 0" ng-repeat="forecast in forecastResult.item.forecast  | limitTo: 6">
+                <div class="forecast-item">
+                  {{forecast.day}}, {{forecast.date}}
+                </div>
+                <div class="forecast-item">
+                  {{forecast.text}}
+                </div>
+                <div class="forecast-item">
+                  <span class="low-temp">{{forecast.low}} °F / {{forecast.low | celsius}} °C</span>
+                </div>
+                <div class="forecast-item">
+                  <span class="high-temp">{{forecast.high}} °F / {{forecast.high | celsius}} °C</span>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/filters/celcius.js"></script>
+  <script src="scripts/services/appconstants.js"></script>
+  <script src="scripts/services/weatherservice.js"></script>
+  <script src="scripts/controllers/maincontroller.js"></script>
+</body>
+</html>
